@@ -4,9 +4,22 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
 }
 
 .map {
     width: 1280px;
     cursor: crosshair;
+}
+
+.dropdown {
+    position: absolute;
+}
+
+.active {
+    display: block;
+}
+
+.inactive {
+    display: none;
 }
