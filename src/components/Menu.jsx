@@ -4,7 +4,7 @@ import Target from "./menu/Target";
 export default function Menu( {active, coords}) {
     const position = {
         left: coords.x - 55,
-        top: coords.y - 55
+        top: coords.y - 65
     }
 
     return (
