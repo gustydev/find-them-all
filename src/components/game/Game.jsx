@@ -6,16 +6,20 @@ import { useParams } from "react-router-dom";
 
 export default function Game() {
   const [menuActive, setMenuActive] = useState(false);
-  const [coords, setCoords] = useState({x: 0, y: 0});
+  const [menuCoords, setMenuCoords] = useState({x: 0, y: 0});
+  const [guessCoords, setGuessCoords] = useState({x: 0, y: 0})
   const [gameData, setGameData] = useState({});
   const [mapData, setMapData] = useState({});
   const { gameId } = useParams();
+  const [loading, setLoading] = useState(true);
   console.log(gameData, mapData)
   
   function handleClick(e) {
-    setCoords({x: e.pageX, y: e.pageY})
+    setMenuCoords({x: e.pageX, y: e.pageY})
+    setGuessCoords({x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY})
+
     console.log({x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY})
-    // note: coordinates sent to back-end are offset X and Y, NOT page!!
+
     setMenuActive(!menuActive)
   }
 
@@ -35,6 +39,7 @@ export default function Game() {
     let ignore = false;
 
     async function fetchData() {
+      setLoading(true);
       try {
         const data = await apiRequest(`${API_URL}/api/game/${gameId}`);
         setGameData(data)
@@ -43,6 +48,8 @@ export default function Game() {
         setMapData(map);
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false);
       }
     }
 
@@ -53,14 +60,16 @@ export default function Game() {
     }
   }, [gameId])
 
+  if (loading) return 'Loading'
+  
   return (
     <>
     <div className={styles.mapContainer}>
       <img src={`${API_URL}/images/maps/${gameData.map}.jpeg`} alt={mapData.name + ' map'} className={styles.map} onClick={handleClick} />
-      <Menu active={menuActive} coords={coords}></Menu>
+      <Menu active={menuActive} menuCoords={menuCoords} guessCoords={guessCoords} data={gameData} />
     </div>
     <div className={styles.characters}>
-      {gameData.characters.map((c) => {
+      {gameData && gameData.characters.map((c) => {
         return <img key={c.character} src={`${API_URL}/images/characters/${c.character}.jpeg`} alt={c.name} style={{width: '100px'}}/>
       })}
     </div>
