@@ -1,10 +1,16 @@
 import { useEffect, useState } from "react";
 import Menu from "./menu/Menu";
 import styles from './game.module.css';
+import {apiRequest, API_URL} from '../../utils/api';
+import { useParams } from "react-router-dom";
 
 export default function Game() {
   const [menuActive, setMenuActive] = useState(false);
   const [coords, setCoords] = useState({x: 0, y: 0});
+  const [gameData, setGameData] = useState({});
+  const [mapData, setMapData] = useState({});
+  const { gameId } = useParams();
+  console.log(gameData, mapData)
   
   function handleClick(e) {
     setCoords({x: e.pageX, y: e.pageY})
@@ -13,7 +19,7 @@ export default function Game() {
     setMenuActive(!menuActive)
   }
 
-  useEffect(() => {
+  useEffect(() => { // This is to get rid of the menu when resizing window
     const handleResize = () => {
       setMenuActive(false);
     };
@@ -25,10 +31,39 @@ export default function Game() {
     };
   }, []);
 
+  useEffect(() => {
+    let ignore = false;
+
+    async function fetchData() {
+      try {
+        const data = await apiRequest(`${API_URL}/api/game/${gameId}`);
+        setGameData(data)
+
+        const map = await apiRequest(`${API_URL}/api/map/${data.map}`);
+        setMapData(map);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    if (!ignore) fetchData();
+
+    return () => {
+      ignore = true;
+    }
+  }, [gameId])
+
   return (
+    <>
     <div className={styles.mapContainer}>
-      <img src="/images/waldo-map.jpeg" alt="waldo map" className={styles.map} onClick={handleClick} />
+      <img src={`${API_URL}/images/maps/${gameData.map}.jpeg`} alt={mapData.name + ' map'} className={styles.map} onClick={handleClick} />
       <Menu active={menuActive} coords={coords}></Menu>
     </div>
+    <div className={styles.characters}>
+      {gameData.characters.map((c) => {
+        return <img key={c.character} src={`${API_URL}/images/characters/${c.character}.jpeg`} alt={c.name} style={{width: '100px'}}/>
+      })}
+    </div>
+    </>
   )
 }

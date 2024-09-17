@@ -1,5 +1,5 @@
-export default function Target() {
+export default function Target( { style }) {
     return (
-        <div className='target' />
+        <div className={style} />
     )
 }

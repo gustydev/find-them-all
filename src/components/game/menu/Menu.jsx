@@ -10,8 +10,8 @@ export default function Menu( {active, coords}) {
 
     return (
         <div className={styles.menu + ' ' + (active ? styles.active : styles.inactive)} style={position}>
-            <Target active={active} coords={coords} />
-            <Dropdown active={active} coords={coords} />
+            <Target style={styles.target} active={active} coords={coords} />
+            <Dropdown style={styles.dropdown} active={active} coords={coords} />
         </div>
     )
 }
