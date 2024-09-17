@@ -1,5 +1,5 @@
-import Dropdown from "./menu/Dropdown";
-import Target from "./menu/Target";
+import Dropdown from "./Dropdown";
+import Target from "./Target";
 
 export default function Menu( {active, coords}) {
     const position = {

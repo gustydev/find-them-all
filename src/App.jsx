@@ -1,6 +1,6 @@
 import './App.css'
 import { useState, useEffect } from 'react';
-import Menu from './components/Menu';
+import Menu from './components/menu/Menu';
 
 function App() {
   const [menuActive, setMenuActive] = useState(false);
@@ -8,6 +8,7 @@ function App() {
   
   function handleClick(e) {
     setCoords({x: e.pageX, y: e.pageY})
+    console.log({x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY})
     // note: coordinates sent to back-end are offset X and Y, NOT page!!
     setMenuActive(!menuActive)
   }
