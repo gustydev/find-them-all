@@ -1,0 +1,40 @@
+.mapContainer {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.map {
+    width: 1280px;
+    cursor: crosshair;
+}
+
+.active {
+    display: flex;
+}
+
+.inactive {
+    display: none;
+}
+
+.menu {
+    position: absolute;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.target {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 5px dashed red;
+    background-color: rgba(255, 255, 255, 0.438);
+}
+
+.dropdown > ul {
+    display: flex;
+    flex-direction: column;
+}

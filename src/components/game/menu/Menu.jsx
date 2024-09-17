@@ -1,5 +1,6 @@
 import Dropdown from "./Dropdown";
 import Target from "./Target";
+import styles from '../game.module.css'
 
 export default function Menu( {active, coords}) {
     const position = {
@@ -8,7 +9,7 @@ export default function Menu( {active, coords}) {
     }
 
     return (
-        <div className={'menu ' + (active ? 'active' : 'inactive')} style={position}>
+        <div className={styles.menu + ' ' + (active ? styles.active : styles.inactive)} style={position}>
             <Target active={active} coords={coords} />
             <Dropdown active={active} coords={coords} />
         </div>
