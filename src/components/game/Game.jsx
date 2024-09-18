@@ -15,13 +15,35 @@ export default function Game() {
   console.log(gameData, mapData)
   
   function handleClick(e) {
-    setMenuCoords({x: e.pageX, y: e.pageY})
-    setGuessCoords({x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY})
-
+    if (!gameData.finished) {
+      setMenuCoords({x: e.pageX, y: e.pageY})
+      setGuessCoords({x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY})
+      setMenuActive(!menuActive)
+    }
     console.log({x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY})
-
-    setMenuActive(!menuActive)
   }
+
+  async function makeGuess(charId) {
+    try {
+        const guess = await apiRequest(`${API_URL}/api/game/${gameData._id}`, {
+            method: 'post',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                coordinates: guessCoords,
+                option: charId
+            })
+        });
+        if (guess.msg) { alert(guess.msg) } // should display the messages somewhere else other than alerts
+        if (guess.game) { setGameData(guess.game) } // request only returns "game" if guess is correct
+
+        setMenuActive(false)
+        
+    } catch (error) {
+        console.error(error);
+    }
+}
 
   useEffect(() => { // This is to get rid of the menu when resizing window
     const handleResize = () => {
@@ -66,11 +88,21 @@ export default function Game() {
     <>
     <div className={styles.mapContainer}>
       <img src={`${API_URL}/images/maps/${gameData.map}.jpeg`} alt={mapData.name + ' map'} className={styles.map} onClick={handleClick} />
-      <Menu active={menuActive} menuCoords={menuCoords} guessCoords={guessCoords} data={gameData} />
+      <Menu guessFunc={makeGuess} active={menuActive} setActive={setMenuActive} menuCoords={menuCoords} guessCoords={guessCoords} data={gameData} />
     </div>
     <div className={styles.characters}>
       {gameData && gameData.characters.map((c) => {
-        return <img key={c.character} src={`${API_URL}/images/characters/${c.character}.jpeg`} alt={c.name} style={{width: '100px'}}/>
+        return (
+          <div key={c.character}>
+            <img
+              className={styles.charImg} 
+              src={`${API_URL}/images/characters/${c.character}.jpeg`} 
+              alt={c.name}
+              style={{borderBottom: c.found ? '5px solid green' : '5px solid red'}}
+            />
+            <div style={{color: c.found ? 'green' : 'red'}}>{c.found ? 'FOUND' : 'NOT FOUND'}</div>
+          </div>
+      )
       })}
     </div>
     </>

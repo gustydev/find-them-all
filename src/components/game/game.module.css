@@ -38,3 +38,15 @@
     display: flex;
     flex-direction: column;
 }
+
+.characters {
+    display: flex;
+    align-items: end;
+    text-align: center;
+    font-weight: bold;
+    gap: 8px;
+}
+
+.charImg {
+    width: 100px;
+}

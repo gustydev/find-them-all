@@ -53,6 +53,7 @@ html {
 
 body {
 	min-height: 100%;
+	font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
 
 #root {
