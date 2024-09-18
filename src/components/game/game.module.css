@@ -2,6 +2,7 @@
     width: 100%;
     height: auto;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     position: relative;
@@ -41,7 +42,8 @@
 
 .characters {
     display: flex;
-    align-items: end;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
     font-weight: bold;
     gap: 8px;
@@ -49,4 +51,21 @@
 
 .charImg {
     width: 100px;
+    height: auto;
+}
+
+.charName {
+    justify-self: start;
+}
+
+.game {
+    display: flex;
+    justify-content: space-between;
+}
+
+.info, .otherInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
 }

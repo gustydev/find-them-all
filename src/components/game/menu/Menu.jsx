@@ -4,8 +4,8 @@ import styles from '../game.module.css'
 
 export default function Menu( {active, menuCoords, guessFunc, guessCoords, data }) {
     const position = {
-        left: menuCoords.x - 55,
-        top: menuCoords.y - 55
+        left: menuCoords.x - 50,
+        top: menuCoords.y - 50
     }
 
     return (

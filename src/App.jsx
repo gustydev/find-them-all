@@ -1,11 +1,12 @@
 import './App.css'
-import { useState, useEffect } from 'react';
-import Menu from './components/game/menu/Menu';
 import { Outlet } from 'react-router-dom';
 
 function App() {
   return (
+    <>
+    <h1>Where&apos;s Waldo?</h1>
     <Outlet/>
+    </>
   )
 }
 

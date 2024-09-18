@@ -16,7 +16,7 @@ export default function Game() {
   
   function handleClick(e) {
     if (!gameData.finished) {
-      setMenuCoords({x: e.pageX, y: e.pageY})
+      setMenuCoords({x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY})
       setGuessCoords({x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY})
       setMenuActive(!menuActive)
     }
@@ -85,26 +85,34 @@ export default function Game() {
   if (loading) return 'Loading'
   
   return (
-    <>
-    <div className={styles.mapContainer}>
-      <img src={`${API_URL}/images/maps/${gameData.map}.jpeg`} alt={mapData.name + ' map'} className={styles.map} onClick={handleClick} />
-      <Menu guessFunc={makeGuess} active={menuActive} setActive={setMenuActive} menuCoords={menuCoords} guessCoords={guessCoords} data={gameData} />
+    <div className={styles.game}>
+      <div className={styles.mapContainer}>
+        <img src={`${API_URL}/images/maps/${gameData.map}.jpeg`} alt={mapData.name + ' map'} className={styles.map} onClick={handleClick} />
+        <Menu guessFunc={makeGuess} active={menuActive} setActive={setMenuActive} menuCoords={menuCoords} guessCoords={guessCoords} data={gameData} />
+      </div>
+      <div className={styles.info}>
+        <div className={styles.characters}>
+          <h2>Characters</h2>
+        {gameData && gameData.characters.map((c) => {
+          return (
+            <div key={c.character} className={styles.character}>
+              <img
+                className={styles.charImg} 
+                src={`${API_URL}/images/characters/${c.character}.jpeg`} 
+                alt={c.name}
+              />
+              <h3 className={styles.charName}>{c.name}</h3>
+              <div style={{color: c.found ? 'green' : 'red'}}>{c.found ? 'FOUND' : 'NOT FOUND'}</div>
+            </div>
+          )
+        })}
+        </div>
+        <div className={styles.otherInfo}>
+          <h2 style={{fontWeight: 'bold'}}>{mapData.name}</h2>
+          <p>0:00.00</p>
+          {/* replace above with actual timer later */}
+        </div>
+      </div>
     </div>
-    <div className={styles.characters}>
-      {gameData && gameData.characters.map((c) => {
-        return (
-          <div key={c.character}>
-            <img
-              className={styles.charImg} 
-              src={`${API_URL}/images/characters/${c.character}.jpeg`} 
-              alt={c.name}
-              style={{borderBottom: c.found ? '5px solid green' : '5px solid red'}}
-            />
-            <div style={{color: c.found ? 'green' : 'red'}}>{c.found ? 'FOUND' : 'NOT FOUND'}</div>
-          </div>
-      )
-      })}
-    </div>
-    </>
   )
 }
