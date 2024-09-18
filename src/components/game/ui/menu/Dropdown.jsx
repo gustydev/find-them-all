@@ -1,7 +1,7 @@
-export default function Dropdown({ style, options, guessFunc }) {
+export default function Dropdown({ style, data, guessFunc }) {
     return (
         <ul className={style}>
-            {options.map((c) => {
+            {data.characters && data.characters.map((c) => {
                 if (!c.found) {
                     return <li key={c.character}><button onClick={() => {guessFunc(c.character)}}>{c.name}</button></li>
                 }

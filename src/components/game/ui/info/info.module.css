@@ -1,0 +1,25 @@
+.characters {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    font-weight: bold;
+    gap: 8px;
+}
+
+.charImg {
+    width: 100px;
+    height: auto;
+}
+
+.charName {
+    justify-self: start;
+}
+
+.info, .otherInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+}

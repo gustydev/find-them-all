@@ -1,6 +1,6 @@
-import styles from '../game.module.css'
+import styles from './info.module.css'
 
-export default function Characters ( {chars, apiUrl} ) {
+export default function Characters ( {chars } ) {
     return (
         <div className={styles.characters}>
           <h2>Characters</h2>
@@ -9,7 +9,7 @@ export default function Characters ( {chars, apiUrl} ) {
             <div key={c.character} className={styles.character}>
               <img
                 className={styles.charImg} 
-                src={`${apiUrl}/images/characters/${c.character}.jpeg`} 
+                src={`${import.meta.env.VITE_API_URL}/images/characters/${c.character}.jpeg`} 
                 alt={c.name}
               />
               <h3 className={styles.charName}>{c.name}</h3>
