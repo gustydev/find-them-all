@@ -1,11 +1,25 @@
+import { useState } from "react";
+
 export default function Dropdown({ style, data, guessFunc }) {
+    const [selection, setSelection] = useState('');
+
+    function handleChange (e) {
+        const option = e.target.value;
+
+        if (option) {
+            guessFunc(option);
+            setSelection('')
+        }
+    }
+
     return (
-        <ul className={style}>
+        <select className={style} onChange={handleChange} value={selection} >
+            <option value="" disabled>Select a character</option>
             {data.characters && data.characters.map((c) => {
                 if (!c.found) {
-                    return <li key={c.character}><button onClick={() => {guessFunc(c.character)}}>{c.name}</button></li>
+                    return <option key={c.character} value={c.character}>{c.name}</option>
                 }
             })}
-        </ul>
+        </select>
     )
 }

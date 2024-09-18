@@ -5,7 +5,7 @@ import styles from './menu.module.css'
 export default function Menu( {active, coords, guessFunc, data }) {
     const position = {
         left: coords.x - 50,
-        top: coords.y - 50
+        top: coords.y - 55
     }
 
     return (
