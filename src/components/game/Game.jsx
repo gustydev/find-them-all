@@ -45,19 +45,7 @@ export default function Game() {
     } catch (error) {
         console.error(error);
     }
-}
-
-  useEffect(() => { // This is to get rid of the menu when resizing window
-    const handleResize = () => {
-      setMenuActive(false);
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
+  }
 
   useEffect(() => {
     let ignore = false;
@@ -90,7 +78,7 @@ export default function Game() {
     <div className={styles.game}>
       <div className={styles.mapContainer}>
         <Map gameData={gameData} mapData={mapData} handleClick={handleClick} />
-        <Menu guessFunc={makeGuess} active={menuActive} setActive={setMenuActive} menuCoords={menuCoords} data={gameData} />
+        <Menu guessFunc={makeGuess} active={menuActive} setActive={setMenuActive} coords={menuCoords} data={gameData} />
       </div>
       <Info gameData={gameData} mapData={mapData} />
     </div>

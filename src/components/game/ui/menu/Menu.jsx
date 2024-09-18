@@ -2,10 +2,10 @@ import Dropdown from "./Dropdown";
 import Target from "./Target";
 import styles from './menu.module.css'
 
-export default function Menu( {active, menuCoords, guessFunc, data }) {
+export default function Menu( {active, coords, guessFunc, data }) {
     const position = {
-        left: menuCoords.x - 50,
-        top: menuCoords.y - 50
+        left: coords.x - 50,
+        top: coords.y - 50
     }
 
     return (
