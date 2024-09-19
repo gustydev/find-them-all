@@ -1,15 +1,15 @@
 import Characters from "./Characters"
 import styles from './info.module.css'
+import Stopwatch from "./Stopwatch"
 
-export default function Info ( {gameData, mapData} ) {
+export default function Info ( {gameData, mapData, finished} ) {
     return (
         <div className={styles.info}>
             <Characters chars={gameData.characters} />
             <div className={styles.otherInfo}>
                 <p>Map:</p>
                 <h2 style={{fontWeight: 'bold'}}>{mapData.name}</h2>
-                <p>0:00.00</p>
-                {/* replace above with actual timer later */}
+                <Stopwatch finished={finished} />
             </div>
       </div>
     )

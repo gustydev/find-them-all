@@ -5,6 +5,8 @@ import Info from "./ui/info/Info";
 import styles from './game.module.css';
 import {apiRequest} from '../../utils/api';
 import { useParams } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Game() {
   const [menuActive, setMenuActive] = useState(false);
@@ -14,6 +16,7 @@ export default function Game() {
   const [mapData, setMapData] = useState({});
   const { gameId } = useParams();
   const [loading, setLoading] = useState(true);
+  const [finished, setFinished] = useState(false)
   console.log(gameData, mapData)
   
   function handleClick(e) {
@@ -37,11 +40,14 @@ export default function Game() {
                 option: charId
             })
         });
-        if (guess.msg) { alert(guess.msg) } // should display the messages somewhere else other than alerts
-        if (guess.game) { setGameData(guess.game) } // request only returns "game" if guess is correct
+
+        if (guess.msg) { toast(guess.msg) }
+        if (guess.game) { // request only returns "game" if guess is correct
+          setGameData(guess.game) 
+          if (guess.game.finished) { setFinished(true) }
+        }
 
         setMenuActive(false)
-        
     } catch (error) {
         console.error(error);
     }
@@ -55,7 +61,7 @@ export default function Game() {
       try {
         const data = await apiRequest(`${import.meta.env.VITE_API_URL}/api/game/${gameId}`);
         setGameData(data)
-
+        if (data.finished) { setFinished(true) }
         const map = await apiRequest(`${import.meta.env.VITE_API_URL}/api/map/${data.map}`);
         setMapData(map);
       } catch (error) {
@@ -80,7 +86,19 @@ export default function Game() {
         <Map gameData={gameData} mapData={mapData} handleClick={handleClick} />
         <Menu guessFunc={makeGuess} active={menuActive} setActive={setMenuActive} coords={menuCoords} data={gameData} />
       </div>
-      <Info gameData={gameData} mapData={mapData} />
+      <Info gameData={gameData} mapData={mapData} finished={finished} />
+      <ToastContainer
+        position="bottom-center"
+        autoClose={3000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </div>
   )
 }
