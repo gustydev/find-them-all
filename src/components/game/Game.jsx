@@ -17,14 +17,13 @@ export default function Game() {
   const { gameId } = useParams();
   const [loading, setLoading] = useState(true);
   const [finished, setFinished] = useState(false)
+  const [expired, setExpired] = useState(false);
   console.log(gameData, mapData)
   
   function handleClick(e) {
-    if (!gameData.finished) {
-      setMenuCoords({x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY})
-      setGuessCoords({x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY})
-      setMenuActive(!menuActive)
-    }
+    setMenuCoords({x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY})
+    setGuessCoords({x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY})
+    setMenuActive(!menuActive)
     console.log({x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY})
   }
 
@@ -44,9 +43,11 @@ export default function Game() {
         if (guess.msg) { toast(guess.msg) }
         if (guess.game) { // request only returns "game" if guess is correct
           setGameData(guess.game) 
-          if (guess.game.finished) { setFinished(true) }
+          if (guess.game.finished) { 
+            setFinished(true) 
+            toast.success('All characters found!')
+          }
         }
-
         setMenuActive(false)
     } catch (error) {
         console.error(error);
@@ -60,8 +61,11 @@ export default function Game() {
       setLoading(true);
       try {
         const data = await apiRequest(`${import.meta.env.VITE_API_URL}/api/game/${gameId}`);
-        setGameData(data)
-        if (data.finished) { setFinished(true) }
+        if (data.finished) { 
+          setExpired(true);
+        }
+
+        setGameData(data) 
         const map = await apiRequest(`${import.meta.env.VITE_API_URL}/api/map/${data.map}`);
         setMapData(map);
       } catch (error) {
@@ -78,7 +82,16 @@ export default function Game() {
     }
   }, [gameId])
 
+  useEffect(() => {
+    window.onbeforeunload = () => true;
+    
+    return () => {
+      window.onbeforeunload = null;
+    };
+  }, [gameData]);
+
   if (loading) return 'Loading'
+  if (expired) return 'Game session expired! Please start a new game.'
   
   return (
     <div className={styles.game}>
