@@ -7,6 +7,7 @@ import {apiRequest} from '../../utils/api';
 import { useParams } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Marker from "./ui/map/Marker";
 
 export default function Game() {
   const [menuActive, setMenuActive] = useState(false);
@@ -64,7 +65,8 @@ export default function Game() {
       try {
         const data = await apiRequest(`${import.meta.env.VITE_API_URL}/api/game/${gameId}`);
         if (data.started) { 
-          setExpired(true);
+          // setExpired(true);
+          // uncommented to keep testing
         }
 
         const start = await apiRequest(`${import.meta.env.VITE_API_URL}/api/game/${gameId}/start`);
@@ -105,6 +107,12 @@ export default function Game() {
       <div className={styles.mapContainer}>
         <Map gameData={gameData} mapData={mapData} handleClick={handleClick} />
         <Menu guessFunc={makeGuess} active={menuActive} setActive={setMenuActive} coords={menuCoords} data={gameData} />
+        {gameData.characters.map((c) => {
+          if (c.found) {
+            const char = mapData.characters.find((mc) => mc.character === c.character)
+            return <Marker key={c.character} coords={char.coordinates} />
+          }
+        })}
       </div>
       <Info gameData={gameData} mapData={mapData} finished={finished} />
       <ToastContainer
