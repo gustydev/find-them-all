@@ -21,9 +21,11 @@ export default function Game() {
   console.log(gameData, mapData)
   
   function handleClick(e) {
-    setMenuCoords({x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY})
-    setGuessCoords({x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY})
-    setMenuActive(!menuActive)
+    if (!gameData.finished) {
+      setMenuCoords({x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY})
+      setGuessCoords({x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY})
+      setMenuActive(!menuActive)
+    }
     console.log({x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY})
   }
 
@@ -61,11 +63,14 @@ export default function Game() {
       setLoading(true);
       try {
         const data = await apiRequest(`${import.meta.env.VITE_API_URL}/api/game/${gameId}`);
-        if (data.finished) { 
+        if (data.started) { 
           setExpired(true);
         }
 
+        const start = await apiRequest(`${import.meta.env.VITE_API_URL}/api/game/${gameId}/start`);
+        toast.info(start.msg)
         setGameData(data) 
+
         const map = await apiRequest(`${import.meta.env.VITE_API_URL}/api/map/${data.map}`);
         setMapData(map);
       } catch (error) {
@@ -83,15 +88,17 @@ export default function Game() {
   }, [gameId])
 
   useEffect(() => {
-    window.onbeforeunload = () => true;
+    if (!loading && !expired) {
+      window.onbeforeunload = () => true;
+    }
     
     return () => {
       window.onbeforeunload = null;
     };
-  }, [gameData]);
+  }, [loading, expired]);
 
-  if (loading) return 'Loading'
   if (expired) return 'Game session expired! Please start a new game.'
+  if (loading) return 'Loading'
   
   return (
     <div className={styles.game}>
