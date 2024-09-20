@@ -5,6 +5,7 @@ import App from './App.jsx'
 import Game from './components/game/Game.jsx';
 import ErrorPage from './components/error/ErrorPage.jsx'
 import './index.css'
+import Index from './components/index/Index.jsx';
 
 const router = createBrowserRouter([
   {
@@ -12,6 +13,7 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: <ErrorPage/>,
     children: [
+      { path: '/', element: <Index />},
       { path: 'map/:mapId', element: <Map/> },
       { path: 'game/:gameId', element: <Game/> }
     ]

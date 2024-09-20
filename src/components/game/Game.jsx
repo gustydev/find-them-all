@@ -100,7 +100,7 @@ export default function Game() {
   }, [loading, expired]);
 
   if (expired) return 'Game session expired! Please start a new game.'
-  if (loading) return 'Loading'
+  if (loading) return 'Loading your game...'
   
   return (
     <div className={styles.game}>
