@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { apiRequest } from "../../utils/api";
-import MapInfo from "./MapInfo";
+import MapCard from "./MapCard";
 import { useNavigate } from "react-router-dom";
 
 export default function Index() {
@@ -42,10 +42,13 @@ export default function Index() {
 
     return (
         <>
-        <div>Find the characters as fast as possible! Pick a map:</div>
-        {maps.map((m) => {
-            return <MapInfo key={m._id} map={m} startGame={startGame}/>
-        })}
+        <div>Find the characters as fast as possible!</div>
+        <div className="mapList">
+            <h2>Maps</h2>
+            {maps.map((m) => {
+                return <MapCard key={m._id} map={m} startGame={startGame}/>
+            })}
+        </div>
         </>
     )
 }

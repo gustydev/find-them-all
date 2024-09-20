@@ -14,7 +14,7 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage/>,
     children: [
       { path: '/', element: <Index />},
-      { path: 'map/:mapId', element: <Map/> },
+      // { path: 'map/:mapId', element: <MapInfo /> },
       { path: 'game/:gameId', element: <Game/> }
     ]
   }

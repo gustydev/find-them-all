@@ -69,8 +69,8 @@ export default function Game() {
           // uncommented to keep testing
         }
 
-        const start = await apiRequest(`${import.meta.env.VITE_API_URL}/api/game/${gameId}/start`);
-        toast.info(start.msg)
+        // const start = await apiRequest(`${import.meta.env.VITE_API_URL}/api/game/${gameId}/start`);
+        // toast.info(start.msg)
         setGameData(data) 
 
         const map = await apiRequest(`${import.meta.env.VITE_API_URL}/api/map/${data.map}`);
@@ -114,7 +114,7 @@ export default function Game() {
           }
         })}
       </div>
-      <Info gameData={gameData} mapData={mapData} finished={finished} />
+      <Info gameData={gameData} mapData={mapData} finished={finished}/>
       <ToastContainer
         position="bottom-center"
         autoClose={3000}
