@@ -17,7 +17,7 @@ function getDisplay(time) {
     return `${hours}:${clockFormat(minutes)}:${clockFormat(seconds)}.${clockFormat(milliseconds)}`
 }
 
-export default function Info ( {gameData, mapData, finished} ) {
+export default function Info ( {gameData, mapData, finished, submitScore} ) {
     const [time, setTime] = useState(0);
 
     return (
@@ -28,7 +28,7 @@ export default function Info ( {gameData, mapData, finished} ) {
                 {!finished && <Stopwatch finished={finished} time={time} setTime={setTime} display={getDisplay(time)}/>}
             </div>
             <Characters chars={gameData.characters} />
-            {finished && <SubmitScore display={getDisplay(time)} />}
+            {finished && <SubmitScore display={getDisplay(time)} submit={submitScore} time={time}/>}
       </div>
     )
 }

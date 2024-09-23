@@ -4,7 +4,7 @@ import Menu from "./ui/menu/Menu";
 import Info from "./ui/info/Info";
 import styles from './game.module.css';
 import {apiRequest} from '../../utils/api';
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Marker from "./ui/map/Marker";
@@ -19,6 +19,7 @@ export default function Game() {
   const [loading, setLoading] = useState(true);
   const [finished, setFinished] = useState(false)
   const [expired, setExpired] = useState(false);
+  const navigate = useNavigate();
   console.log(gameData, mapData)
   
   function handleClick(e) {
@@ -54,6 +55,21 @@ export default function Game() {
         setMenuActive(false)
     } catch (error) {
         console.error(error);
+    }
+  }
+
+  async function submitScore(formData) {
+    try {
+      await apiRequest(`${import.meta.env.VITE_API_URL}/api/map/${mapData._id}/score`, {
+        method: 'post',
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData)
+      })
+      navigate(`/map/${mapData._id}`);
+    } catch (error) {
+      console.error(error)
     }
   }
 
@@ -114,7 +130,7 @@ export default function Game() {
           }
         })}
       </div>
-      <Info gameData={gameData} mapData={mapData} finished={finished}/>
+      <Info gameData={gameData} mapData={mapData} finished={finished} submitScore={submitScore}/>
       <ToastContainer
         position="bottom-center"
         autoClose={3000}
