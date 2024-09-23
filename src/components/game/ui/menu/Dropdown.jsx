@@ -17,7 +17,7 @@ export default function Dropdown({ style, data, guessFunc }) {
             <option value="" disabled>Select a character</option>
             {data.characters && data.characters.map((c) => {
                 if (!c.found) {
-                    return <option key={c.character} value={c.character}>{c.name}</option>
+                    return <option key={c.character._id} value={c.character._id}>{c.character.name}</option>
                 }
             })}
         </select>

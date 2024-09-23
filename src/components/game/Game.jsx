@@ -121,12 +121,12 @@ export default function Game() {
   return (
     <div className={styles.game}>
       <div className={styles.mapContainer}>
-        <Map gameData={gameData} mapData={mapData} handleClick={handleClick} />
+        <Map mapData={mapData} handleClick={handleClick} style={{width: '1280px', cursor: 'crosshair'}}/>
         <Menu guessFunc={makeGuess} active={menuActive} setActive={setMenuActive} coords={menuCoords} data={gameData} />
         {gameData.characters.map((c) => {
           if (c.found) {
-            const char = mapData.characters.find((mc) => mc.character === c.character)
-            return <Marker key={c.character} coords={char.coordinates} />
+            const char = mapData.characters.find((ch) => ch.character._id === c.character._id)
+            return <Marker key={c.character._id} coords={char.coordinates} />
           }
         })}
       </div>

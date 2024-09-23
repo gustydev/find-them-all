@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom";
 import { apiRequest } from "../../utils/api";
 import Leaderboard from "./Leaderboard";
+import MapDetails from "./MapDetails";
 
 export default function MapInfo() {
     const [mapData, setMapData] = useState({});
@@ -28,9 +29,10 @@ export default function MapInfo() {
 
     if (loading) return 'Loading map data...'
     console.log(mapData)
+
     return (
         <>
-        <div>map info goes here!</div>
+        <MapDetails map={mapData} />
         <Leaderboard data={mapData.leaderboard} />
         </>
     )
