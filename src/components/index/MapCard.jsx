@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom"
+
 export default function MapCard( { map, startGame } ) {
     const styles = {
         border: '1px solid black',
@@ -23,7 +25,7 @@ export default function MapCard( { map, startGame } ) {
                 {map.characters.length} characters
             </div>
             <button onClick={() => {startGame(map._id)}}>Play</button>
-            <button>View info (leaderboards and more)</button>
+            <Link to={`/map/${map._id}`}><button>View info (leaderboards and more)</button></Link>
         </div>
     )
 }

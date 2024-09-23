@@ -6,6 +6,7 @@ import Game from './components/game/Game.jsx';
 import ErrorPage from './components/error/ErrorPage.jsx'
 import './index.css'
 import Index from './components/index/Index.jsx';
+import MapInfo from './components/mapInfo/MapInfo.jsx';
 
 const router = createBrowserRouter([
   {
@@ -14,7 +15,7 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage/>,
     children: [
       { path: '/', element: <Index />},
-      // { path: 'map/:mapId', element: <MapInfo /> },
+      { path: 'map/:mapId', element: <MapInfo /> },
       { path: 'game/:gameId', element: <Game/> }
     ]
   }
