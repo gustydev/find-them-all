@@ -11,12 +11,11 @@ export default function Info ( {gameData, mapData, finished, submitScore} ) {
     return (
         <div className={styles.info}>
             <div className={styles.otherInfo}>
-                <p>Map:</p>
                 <h2 style={{fontWeight: 'bold'}}>{mapData.name}</h2>
                 {!finished && <Stopwatch finished={finished} time={time} setTime={setTime} display={formatTimeDisplay(time)}/>}
             </div>
-            <Characters gameData={gameData} mapData={mapData} inGame={true} />
             {finished && <SubmitScore display={formatTimeDisplay(time)} submit={submitScore} time={time}/>}
+            <Characters gameData={gameData} mapData={mapData} inGame={true} />
       </div>
     )
 }

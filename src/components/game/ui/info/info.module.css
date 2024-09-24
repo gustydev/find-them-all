@@ -1,14 +1,13 @@
 .characters {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    align-items: end;
     text-align: center;
     font-weight: bold;
     gap: 8px;
 }
 
 .charImg {
-    width: 80px;
+    width: 50px;
     height: auto;
 }
 
@@ -18,11 +17,24 @@
 
 .info, .otherInfo {
     display: flex;
-    flex-direction: column;
     align-items: center;
     gap: 4px;
 }
 
+.otherInfo {
+    flex-direction: column;
+}
+
 .info {
     gap: 32px;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.submit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px
 }

@@ -5,7 +5,6 @@ export default function Characters ( {gameData, mapData, inGame, style } ) {
 
     return (
         <div className={styles.characters} style={style}>
-          <h2>Characters</h2>
         {chars && chars.map((c) => {
           return (
             <div key={c.character._id} className={styles.character}>

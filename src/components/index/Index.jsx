@@ -41,8 +41,6 @@ export default function Index() {
         }
     }
 
-    console.log(maps)
-
     return (
         <div className={styles.main}>
             <div>Find the characters as fast as possible!</div>

@@ -1,10 +1,5 @@
 import { useState } from "react"
-
-const styles = {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '4px'
-}
+import styles from './info.module.css'
 
 export default function SubmitScore ({display, submit, time}) {
     const [name, setName] = useState('');
@@ -15,10 +10,10 @@ export default function SubmitScore ({display, submit, time}) {
     }
 
     return (
-        <div style={styles}>
+        <div className={styles.submit}>
             <h1>Congrats!</h1>
             <p>Your time: {display}</p>
-            <form action="" onSubmit={handleSubmit} style={styles}>
+            <form action="" onSubmit={handleSubmit} className={styles.submit}>
                 <input onChange={(e) => {setName(e.target.value)}} type="text" name='name' placeholder="Your name (optional)" minLength='2' maxLength='30'/>
                 <input type="submit" value="Submit score" />
             </form>

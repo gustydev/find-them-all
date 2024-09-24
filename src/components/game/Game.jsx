@@ -20,7 +20,7 @@ export default function Game() {
   const [finished, setFinished] = useState(false)
   const [expired, setExpired] = useState(false);
   const navigate = useNavigate();
-  console.log(gameData, mapData)
+  // console.log(gameData, mapData)
   
   function handleClick(e) {
     if (!gameData.finished) {
@@ -119,6 +119,8 @@ export default function Game() {
   
   return (
     <div className={styles.game}>
+
+      <Info gameData={gameData} mapData={mapData} finished={finished} submitScore={submitScore}/>
       <div className={styles.mapContainer}>
         <Map mapData={mapData} handleClick={handleClick} style={{width: '1280px', cursor: 'crosshair'}}/>
         <Menu guessFunc={makeGuess} active={menuActive} setActive={setMenuActive} coords={menuCoords} data={gameData} />
@@ -129,7 +131,6 @@ export default function Game() {
           }
         })}
       </div>
-      <Info gameData={gameData} mapData={mapData} finished={finished} submitScore={submitScore}/>
       <ToastContainer
         position="bottom-center"
         autoClose={3000}
