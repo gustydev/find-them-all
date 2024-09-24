@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react"
 import { apiRequest } from "../../utils/api";
 import MapCard from "./MapCard";
-import { useNavigate } from "react-router-dom";
 import styles from './index.module.css'
+import { useOutletContext } from "react-router-dom";
 
 export default function Index() {
     const [maps, setMaps] = useState([]);
-    const navigate = useNavigate();
+    const [startGame] = useOutletContext();
 
     useEffect(() => {
         let ignore = false;
@@ -26,20 +26,6 @@ export default function Index() {
             ignore = true;
         }
     }, [])
-
-    async function startGame(id) {
-        try {
-            const game = await apiRequest(`${import.meta.env.VITE_API_URL}/api/game/new/${id}`, {
-                method: 'post',
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-            navigate(`/game/${game._id}`)
-        } catch (error) {
-            console.error(error);
-        }
-    }
 
     return (
         <div className={styles.main}>

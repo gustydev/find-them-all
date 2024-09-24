@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { formatTimeDisplay } from "../../utils/formatTimeDisplay"
+import styles from './mapInfo.module.css'
 
 export default function Leaderboard( {data} ) {
     const [hidden, setHidden] = useState(true);
@@ -8,15 +9,29 @@ export default function Leaderboard( {data} ) {
     return (
         <>
         <h2>Leaderboard</h2>
-        {scores.length === 0 ? 'No scores yet.' : hidden ? <button onClick={() => {setHidden(!hidden)}}>Show scores</button> : (
+        {scores.length === 0 ? 'No scores yet.' : hidden ? <button onClick={() => {setHidden(!hidden)}}>Show scores ({scores.length})</button> : (
             <>
             <button onClick={() => setHidden(!hidden)}>Hide scores</button>
-            {scores.map((score) => {
-                return <div key={score._id}>
-                    {score.name}: {formatTimeDisplay(score.time)} |&nbsp;
-                    {new Date(score.date).toLocaleString()}
-                </div>
-            })}
+            <table className={styles.table}>
+                <thead>
+                    <tr>
+                        <th>Position</th>
+                        <th>Name</th>
+                        <th>Time</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {scores.map((score, index) => (
+                        <tr key={score._id}>
+                            <td style={{fontWeight: 'bold'}}>{index + 1}</td>
+                            <td>{score.name}</td>
+                            <td>{formatTimeDisplay(score.time)}</td>
+                            <td>{new Date(score.date).toLocaleString()}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
             </>
         )}
         </>

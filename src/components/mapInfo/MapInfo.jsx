@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 import { apiRequest } from "../../utils/api";
+import styles from './mapInfo.module.css'
 import Leaderboard from "./Leaderboard";
 import MapDetails from "./MapDetails";
 
@@ -8,6 +9,7 @@ export default function MapInfo() {
     const [mapData, setMapData] = useState({});
     const { mapId } = useParams();
     const [loading, setLoading] = useState(true);
+    const [startGame] = useOutletContext();
 
     useEffect(() => {
         let ignore = false;
@@ -31,9 +33,10 @@ export default function MapInfo() {
     console.log(mapData)
 
     return (
-        <>
-        <MapDetails map={mapData} />
-        <Leaderboard data={mapData.leaderboard} />
-        </>
+        <div className={styles.main}>
+            <MapDetails map={mapData} />
+            <button onClick={() => {startGame(mapData._id)}}>Play now</button>
+            <Leaderboard data={mapData.leaderboard} />
+        </div>
     )
 }
