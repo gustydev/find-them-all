@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { apiRequest } from "../../utils/api";
 import MapCard from "./MapCard";
 import { useNavigate } from "react-router-dom";
+import styles from './index.module.css'
 
 export default function Index() {
     const [maps, setMaps] = useState([]);
@@ -40,15 +41,16 @@ export default function Index() {
         }
     }
 
+    console.log(maps)
+
     return (
-        <>
-        <div>Find the characters as fast as possible!</div>
-        <div className="mapList">
-            <h2>Maps</h2>
-            {maps.map((m) => {
-                return <MapCard key={m._id} map={m} startGame={startGame}/>
-            })}
+        <div className={styles.main}>
+            <div>Find the characters as fast as possible!</div>
+            <div className={styles.mapList}>
+                {maps.map((m) => {
+                    return <MapCard key={m._id} map={m} startGame={startGame}/>
+                })}
+            </div>
         </div>
-        </>
     )
 }

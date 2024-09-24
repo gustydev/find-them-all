@@ -1,31 +1,26 @@
 import { Link } from "react-router-dom"
+import Map from "../game/ui/map/Map";
+import styles from './index.module.css';
 
 export default function MapCard( { map, startGame } ) {
-    const styles = {
-        border: '1px solid black',
-        padding: '16px',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        gap: '4px'
-    }
-
     return (
-        <div style={styles}>
-            <img 
-            src={`${import.meta.env.VITE_API_URL}/images/maps/${map._id}.jpeg`}
-            alt={`${map.name} map`}
-            style={{width: '300px', height: 'auto'}}
-            />
-            <div>
-                {map.name}
+        <div className={styles.mapCard}>
+            <div className={styles.info}>
+                <Map mapData={map} style={{width: '300px', height: '200px'}}/>
+                <div className={styles.mapName}>
+                    {map.name}
+                </div>
+                <div>
+                    {map.characters.length} characters
+                </div>
+                <div>
+                    {map.leaderboard.length} scores
+                </div>
             </div>
-            <div>
-                {map.characters.length} characters
+            <div className={styles.links}>
+                <button onClick={() => {startGame(map._id)}}>Play</button>
+                <Link to={`/map/${map._id}`}><button>View info (leaderboards and more)</button></Link>
             </div>
-            <button onClick={() => {startGame(map._id)}}>Play</button>
-            <Link to={`/map/${map._id}`}><button>View info (leaderboards and more)</button></Link>
         </div>
     )
 }

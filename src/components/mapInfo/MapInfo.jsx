@@ -13,7 +13,7 @@ export default function MapInfo() {
         let ignore = false;
         async function fetchMapData() {
             try {
-                const map = await apiRequest(`${import.meta.env.VITE_API_URL}/api/map/${mapId}`);
+                const map = await apiRequest(`${import.meta.env.VITE_API_URL}/api/map/${mapId}?leaderboard=true`);
                 setMapData(map);
             } catch (error) {
                 console.error(error);

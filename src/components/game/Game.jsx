@@ -80,10 +80,9 @@ export default function Game() {
       setLoading(true);
       try {
         const data = await apiRequest(`${import.meta.env.VITE_API_URL}/api/game/${gameId}`);
-        if (data.started) { 
-          // setExpired(true);
-          // uncommented to keep testing
-        }
+        // if (data.started) { 
+        //   setExpired(true);
+        // }
 
         // const start = await apiRequest(`${import.meta.env.VITE_API_URL}/api/game/${gameId}/start`);
         // toast.info(start.msg)
