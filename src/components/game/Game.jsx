@@ -42,13 +42,14 @@ export default function Game() {
             })
         });
 
-        if (guess.msg) { toast(guess.msg) }
-        if (guess.game) { // request only returns "game" if guess is correct
+        if (guess.found) {
+          toast.success(guess.msg)
           setGameData(guess.game) 
           if (guess.game.finished) { 
-            setFinished(true) 
-            toast.success('All characters found!')
+            setFinished(true)
           }
+        } else {
+          toast.error(guess.msg)
         }
         setMenuActive(false)
     } catch (error) {
@@ -82,9 +83,6 @@ export default function Game() {
         const data = await apiRequest(`${import.meta.env.VITE_API_URL}/api/game/${gameId}`);
         setGameData(data) 
 
-        const start = await apiRequest(`${import.meta.env.VITE_API_URL}/api/game/${gameId}/start`);
-        toast.info(start.msg)
-
         const map = await apiRequest(`${import.meta.env.VITE_API_URL}/api/map/${data.map}`);
         setMapData(map);
       } catch (error) {
@@ -92,6 +90,8 @@ export default function Game() {
         console.error(error);
       } finally {
         setLoading(false)
+        const start = await apiRequest(`${import.meta.env.VITE_API_URL}/api/game/${gameId}/start`);
+        toast.info(start.msg)
       }
     }
 

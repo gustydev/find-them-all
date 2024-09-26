@@ -30,6 +30,7 @@
 .info {
     gap: 32px;
     margin-bottom: 16px;
+    text-align: center;
 }
 
 .submit {
