@@ -1,9 +1,10 @@
 import './App.css'
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate, Link, useLocation } from 'react-router-dom';
 import { apiRequest } from './utils/api';
 
 function App() {
   const navigate = useNavigate();
+  const location = useLocation();
   
   async function startGame(id) {
     try {
@@ -21,8 +22,21 @@ function App() {
 
   return (
     <>
-    <h1>Where&apos;s Waldo?</h1>
-    <Outlet context={[startGame]}/>
+    <header>
+      <h1>Find Them All</h1>
+    </header>
+    <main>
+      <Outlet context={[startGame]}/>
+    </main>
+    <footer>
+      {location.pathname !== '/' && (
+        <Link to='/'>
+        <p style={{marginTop: '16px'}}>
+          Return to home page
+        </p>
+      </Link>
+      )}
+    </footer>
     </>
   )
 }

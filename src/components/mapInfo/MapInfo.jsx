@@ -9,6 +9,7 @@ export default function MapInfo() {
     const [mapData, setMapData] = useState({});
     const { mapId } = useParams();
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState({});
     const [startGame] = useOutletContext();
 
     useEffect(() => {
@@ -18,6 +19,7 @@ export default function MapInfo() {
                 const map = await apiRequest(`${import.meta.env.VITE_API_URL}/api/map/${mapId}?leaderboard=true`);
                 setMapData(map);
             } catch (error) {
+                setError(error)
                 console.error(error);
             } finally {
                 setLoading(false);
@@ -29,11 +31,16 @@ export default function MapInfo() {
         return () => { ignore = true }
     }, [mapId])
 
-    if (loading) return 'Loading map data...'
-    console.log(mapData)
+    if (loading) return <div style={{textAlign: 'center'}}>Loading map data...</div>
+
+    if (error.msg) return (
+        <div>
+            Error: {error.msg} (status: {error.statusCode})
+        </div>
+    )
 
     return (
-        <div className={styles.main}>
+        <div className={styles.mapInfo}>
             <MapDetails map={mapData} />
             <button onClick={() => {startGame(mapData._id)}}>Play now</button>
             <Leaderboard data={mapData.leaderboard} />

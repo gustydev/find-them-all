@@ -18,9 +18,8 @@ export default function Game() {
   const { gameId } = useParams();
   const [loading, setLoading] = useState(true);
   const [finished, setFinished] = useState(false)
-  const [expired, setExpired] = useState(false);
+  const [error, setError] = useState({});
   const navigate = useNavigate();
-  // console.log(gameData, mapData)
   
   function handleClick(e) {
     if (!gameData.finished) {
@@ -28,7 +27,6 @@ export default function Game() {
       setGuessCoords({x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY})
       setMenuActive(!menuActive)
     }
-    console.log({x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY})
   }
 
   async function makeGuess(charId) {
@@ -54,6 +52,7 @@ export default function Game() {
         }
         setMenuActive(false)
     } catch (error) {
+        setError(error)
         console.error(error);
     }
   }
@@ -69,6 +68,7 @@ export default function Game() {
       })
       navigate(`/map/${mapData._id}`);
     } catch (error) {
+      setError(error)
       console.error(error)
     }
   }
@@ -80,20 +80,18 @@ export default function Game() {
       setLoading(true);
       try {
         const data = await apiRequest(`${import.meta.env.VITE_API_URL}/api/game/${gameId}`);
-        // if (data.started) { 
-        //   setExpired(true);
-        // }
-
-        // const start = await apiRequest(`${import.meta.env.VITE_API_URL}/api/game/${gameId}/start`);
-        // toast.info(start.msg)
         setGameData(data) 
+
+        const start = await apiRequest(`${import.meta.env.VITE_API_URL}/api/game/${gameId}/start`);
+        toast.info(start.msg)
 
         const map = await apiRequest(`${import.meta.env.VITE_API_URL}/api/map/${data.map}`);
         setMapData(map);
       } catch (error) {
+        setError(error);
         console.error(error);
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
     }
 
@@ -105,21 +103,25 @@ export default function Game() {
   }, [gameId])
 
   useEffect(() => {
-    if (!loading && !expired) {
+    if (!loading && !error.msg) {
       window.onbeforeunload = () => true;
     }
     
     return () => {
       window.onbeforeunload = null;
     };
-  }, [loading, expired]);
+  }, [loading, error]);
 
-  if (expired) return 'Game session expired! Please start a new game.'
-  if (loading) return 'Loading your game...'
-  
+  if (error.msg) return (
+    <div style={{textAlign: 'center'}}>
+      Error: {error.msg} {error.statusCode && `(status: ${error.statusCode})`}
+    </div>
+  )
+
+  if (loading) return <div style={{textAlign: 'center'}}>Loading game...</div>
+
   return (
     <div className={styles.game}>
-
       <Info gameData={gameData} mapData={mapData} finished={finished} submitScore={submitScore}/>
       <div className={styles.mapContainer}>
         <Map mapData={mapData} handleClick={handleClick} style={{width: '1280px', cursor: 'crosshair'}}/>

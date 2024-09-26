@@ -4,7 +4,7 @@ export async function apiRequest(url, options = {}) {
         const data = await response.json();
         
         if (!response.ok) {
-            throw data.errors.messages;
+            throw data;
         }
         
         return data;

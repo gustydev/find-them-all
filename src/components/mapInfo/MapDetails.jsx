@@ -8,7 +8,7 @@ export default function MapDetails( {map} ) {
             <h2><span style={{fontWeight: 'bold'}}>Map:</span> {map.name}</h2>
             <Map mapData={map} style={{width: '600px'}}/>
             <h2><span style={{fontWeight: 'bold'}}>Characters:</span></h2>
-            <Characters mapData={map} />
+            <Characters mapData={map} style={{flexDirection: 'row'}}/>
         </div>
     )
 }

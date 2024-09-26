@@ -13,9 +13,6 @@ export default function MapCard( { map, startGame } ) {
                 <div>
                     {map.characters.length} characters
                 </div>
-                <div>
-                    {map.leaderboard.length} scores
-                </div>
             </div>
             <div className={styles.links}>
                 <button onClick={() => {startGame(map._id)}}>Play</button>

@@ -6,6 +6,7 @@ import { useOutletContext } from "react-router-dom";
 
 export default function Index() {
     const [maps, setMaps] = useState([]);
+    const [loading, setLoading] = useState(true)
     const [startGame] = useOutletContext();
 
     useEffect(() => {
@@ -17,6 +18,8 @@ export default function Index() {
                 setMaps(maps)
             } catch (error) {
                 console.error(error)
+            } finally {
+                setLoading(false)
             }
         }
 
@@ -27,8 +30,10 @@ export default function Index() {
         }
     }, [])
 
+    if (loading) return <div style={{textAlign: 'center'}}>Loading map data...</div>
+
     return (
-        <div className={styles.main}>
+        <div className={styles.index}>
             <div>Find the characters as fast as possible!</div>
             <div className={styles.mapList}>
                 {maps.map((m) => {
