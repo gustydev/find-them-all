@@ -6,15 +6,15 @@ function App() {
   const navigate = useNavigate();
   const location = useLocation();
   
-  async function startGame(id) {
+  async function startGame(mapId) {
     try {
-        const game = await apiRequest(`${import.meta.env.VITE_API_URL}/api/game/new/${id}`, {
+        const game = await apiRequest(`${import.meta.env.VITE_API_URL}/api/game/new/${mapId}`, {
             method: 'post',
             headers: {
                 "Content-Type": "application/json"
             }
         })
-        navigate(`/game/${game._id}`)
+        navigate(`/game/${game._id}?map=${mapId}`)
     } catch (error) {
         console.error(error);
     }

@@ -1,35 +1,13 @@
-import { useEffect, useState } from "react"
 import { useOutletContext, useParams } from "react-router-dom";
-import { apiRequest } from "../../utils/api";
 import styles from './mapInfo.module.css'
 import Leaderboard from "./Leaderboard";
 import MapDetails from "./MapDetails";
+import { useMapData } from "../../hooks/useMapData";
 
 export default function MapInfo() {
-    const [mapData, setMapData] = useState({});
     const { mapId } = useParams();
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState({});
+    const { mapData, loading, error } = useMapData(mapId, true)
     const [startGame] = useOutletContext();
-
-    useEffect(() => {
-        let ignore = false;
-        async function fetchMapData() {
-            try {
-                const map = await apiRequest(`${import.meta.env.VITE_API_URL}/api/map/${mapId}?leaderboard=true`);
-                setMapData(map);
-            } catch (error) {
-                setError(error)
-                console.error(error);
-            } finally {
-                setLoading(false);
-            }
-        }
-
-        if (!ignore) fetchMapData();
-
-        return () => { ignore = true }
-    }, [mapId])
 
     if (loading) return <div style={{textAlign: 'center'}}>Loading map data...</div>
 

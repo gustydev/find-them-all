@@ -2,25 +2,49 @@ import { useEffect, useState } from "react";
 import Map from './ui/map/Map';
 import Menu from "./ui/menu/Menu";
 import Info from "./ui/info/Info";
-import styles from './game.module.css';
 import {apiRequest} from '../../utils/api';
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
+import { useMapData } from "../../hooks/useMapData";
+import { useGameData } from "../../hooks/useGameData";
 import 'react-toastify/dist/ReactToastify.css';
 import Marker from "./ui/map/Marker";
 
 export default function Game() {
+  const { gameId } = useParams();
+  const [searchParams] = useSearchParams();
+
+  const mapId = searchParams.get('map')
+
+  const { gameData, setGameData, loading: gameLoading, error: gameError } = useGameData(gameId)
+  const { mapData, loading: mapLoading, error: mapError } = useMapData(mapId)
+
   const [menuActive, setMenuActive] = useState(false);
   const [menuCoords, setMenuCoords] = useState({x: 0, y: 0});
   const [guessCoords, setGuessCoords] = useState({x: 0, y: 0})
-  const [gameData, setGameData] = useState({});
-  const [mapData, setMapData] = useState({});
-  const { gameId } = useParams();
-  const [loading, setLoading] = useState(true);
   const [finished, setFinished] = useState(false)
-  const [error, setError] = useState({});
+
   const navigate = useNavigate();
+
+  const loading = gameLoading || mapLoading;
+  const error = gameError || mapError;
   
+  useEffect(() => {
+    async function startGame() {
+      if (gameData && !gameData.started) {
+        try {
+          const start = await apiRequest(`${import.meta.env.VITE_API_URL}/api/game/${gameId}/start`);
+          toast.info(start.msg)
+        } catch (err) {
+          console.error(err)
+        }
+      }
+    }
+
+    startGame();
+
+  }, [gameId, gameData])
+
   function handleClick(e) {
     if (!gameData.finished) {
       setMenuCoords({x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY})
@@ -53,7 +77,6 @@ export default function Game() {
         }
         setMenuActive(false)
     } catch (error) {
-        setError(error)
         console.error(error);
     }
   }
@@ -69,38 +92,9 @@ export default function Game() {
       })
       navigate(`/map/${mapData._id}`);
     } catch (error) {
-      setError(error)
       console.error(error)
     }
   }
-
-  useEffect(() => {
-    let ignore = false;
-
-    async function fetchData() {
-      setLoading(true);
-      try {
-        const data = await apiRequest(`${import.meta.env.VITE_API_URL}/api/game/${gameId}`);
-        setGameData(data) 
-
-        const map = await apiRequest(`${import.meta.env.VITE_API_URL}/api/map/${data.map}`);
-        setMapData(map);
-      } catch (error) {
-        setError(error);
-        console.error(error);
-      } finally {
-        setLoading(false)
-        const start = await apiRequest(`${import.meta.env.VITE_API_URL}/api/game/${gameId}/start`);
-        toast.info(start.msg)
-      }
-    }
-
-    if (!ignore) fetchData();
-
-    return () => {
-      ignore = true;
-    }
-  }, [gameId])
 
   useEffect(() => {
     if (!loading && !error.msg) {
@@ -121,9 +115,9 @@ export default function Game() {
   if (loading) return <div style={{textAlign: 'center'}}>Loading game...</div>
 
   return (
-    <div className={styles.game}>
+    <div style={{display: 'grid', gridTemplateColumns: '1fr 3fr'}}>
       <Info gameData={gameData} mapData={mapData} finished={finished} submitScore={submitScore}/>
-      <div className={styles.mapContainer}>
+      <div style={{position: 'relative'}}>
         <Map mapData={mapData} handleClick={handleClick} style={{width: '1280px', cursor: 'crosshair'}}/>
         <Menu guessFunc={makeGuess} active={menuActive} setActive={setMenuActive} coords={menuCoords} data={gameData} />
         {gameData.characters.map((c) => {
@@ -136,7 +130,6 @@ export default function Game() {
       <ToastContainer
         position="bottom-center"
         autoClose={3000}
-        hideProgressBar
         newestOnTop={false}
         closeOnClick
         rtl={false}
