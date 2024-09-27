@@ -3,6 +3,7 @@ import styles from './mapInfo.module.css'
 import Leaderboard from "./Leaderboard";
 import MapDetails from "./MapDetails";
 import { useMapData } from "../../hooks/useMapData";
+import ErrorMessage from "../error/ErrorMessage";
 
 export default function MapInfo() {
     const { mapId } = useParams();
@@ -12,10 +13,8 @@ export default function MapInfo() {
     if (loading) return <div style={{textAlign: 'center'}}>Loading map data...</div>
 
     if (error.msg) return (
-        <div>
-            Error: {error.msg} (status: {error.statusCode})
-        </div>
-    )
+        <ErrorMessage error={error}/>
+      )
 
     return (
         <div className={styles.mapInfo}>

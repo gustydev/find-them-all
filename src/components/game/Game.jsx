@@ -9,6 +9,7 @@ import { useMapData } from "../../hooks/useMapData";
 import { useGameData } from "../../hooks/useGameData";
 import 'react-toastify/dist/ReactToastify.css';
 import Marker from "./ui/map/Marker";
+import ErrorMessage from "../error/ErrorMessage";
 
 export default function Game() {
   const { gameId } = useParams();
@@ -33,10 +34,15 @@ export default function Game() {
     async function startGame() {
       if (gameData && !gameData.started) {
         try {
-          const start = await apiRequest(`${import.meta.env.VITE_API_URL}/api/game/${gameId}/start`);
+          const start = await apiRequest(`${import.meta.env.VITE_API_URL}/api/game/${gameId}/start`, {
+            method: 'put',
+            headers: {
+              "Content-Type": "application/json"
+            }
+          });
           toast.info(start.msg)
-        } catch (err) {
-          console.error(err)
+        } catch (error) {
+          toast.error(error.msg)
         }
       }
     }
@@ -78,7 +84,7 @@ export default function Game() {
         }
         setMenuActive(false)
     } catch (error) {
-        console.error(error);
+        toast.error(error.msg)
     }
   }
 
@@ -94,7 +100,7 @@ export default function Game() {
       
       navigate(`/map/${mapData._id}`);
     } catch (error) {
-      console.error(error)
+      toast.error(error.msg)
     }
   }
 
@@ -109,9 +115,7 @@ export default function Game() {
   }, [loading, error]);
 
   if (error.msg) return (
-    <div style={{textAlign: 'center'}}>
-      Error: {error.msg} {error.statusCode && `(status: ${error.statusCode})`}
-    </div>
+    <ErrorMessage error={error}/>
   )
 
   if (loading) return <div style={{textAlign: 'center'}}>Loading game...</div>

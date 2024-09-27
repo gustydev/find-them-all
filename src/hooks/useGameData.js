@@ -16,7 +16,6 @@ export function useGameData(gameId) {
             setGameData(data) 
           } catch (error) {
             setError(error);
-            console.error(error);
           } finally {
             setLoading(false)
           }

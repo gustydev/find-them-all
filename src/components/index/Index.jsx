@@ -3,10 +3,12 @@ import { apiRequest } from "../../utils/api";
 import MapCard from "./MapCard";
 import styles from './index.module.css'
 import { useOutletContext } from "react-router-dom";
+import ErrorMessage from "../error/ErrorMessage";
 
 export default function Index() {
     const [maps, setMaps] = useState([]);
     const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(false)
     const [startGame] = useOutletContext();
 
     useEffect(() => {
@@ -17,7 +19,7 @@ export default function Index() {
                 const maps = await apiRequest(`${import.meta.env.VITE_API_URL}/api/map/list`)
                 setMaps(maps)
             } catch (error) {
-                console.error(error)
+                setError(error)
             } finally {
                 setLoading(false)
             }
@@ -30,6 +32,10 @@ export default function Index() {
         }
     }, [])
 
+    if (error.msg) return (
+        <ErrorMessage error={error}/>
+    )
+    
     if (loading) return <div style={{textAlign: 'center'}}>Loading map data...</div>
 
     return (

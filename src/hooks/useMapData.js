@@ -16,7 +16,6 @@ export function useMapData(mapId, leaderboard = false) {
             setMapData(data);
           } catch (error) {
             setError(error);
-            console.error(error);
           } finally {
             setLoading(false)
           }
