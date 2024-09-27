@@ -1,8 +1,6 @@
 # Find Them All
 
-**Find Them All** is a "Where's Waldo" type game where players try to locate characters on a series of maps. It's a front-end React app that connects to the Waldo API, allowing users to start new game sessions, submit character guesses that are validated in the back-end, and submit scores on the leaderboards.
-
-To view the Waldo API repository, [click here](https://github.com/gustydev/waldo-api).
+**Find Them All** is a "Where's Waldo" type game where players try to locate characters on a series of maps. It's a front-end React app that connects to the [Waldo API](https://github.com/gustydev/waldo-api), allowing users to start new game sessions, submit character guesses that are validated in the back-end, and submit scores on the leaderboards.
 
 ## Features
 
@@ -27,7 +25,7 @@ To view the Waldo API repository, [click here](https://github.com/gustydev/waldo
 
 - Node.js (v14 or higher)
 - `npm` package manager
-- The [Waldo API](https://github.com/username/waldo-api) backend up and running
+- The [Waldo API](https://github.com/gustydev/waldo-api) backend up and running
 
 ### Installation
 
