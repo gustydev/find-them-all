@@ -31,7 +31,7 @@
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/username/find-them-all.git
+   git clone https://github.com/gustydev/find-them-all.git
    cd find-them-all
    ```
 
