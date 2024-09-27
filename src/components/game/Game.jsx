@@ -56,7 +56,7 @@ export default function Game() {
 
   async function makeGuess(charId) {
     try {
-        const guess = await apiRequest(`${import.meta.env.VITE_API_URL}/api/game/${gameData._id}`, {
+        const guess = await apiRequest(`${import.meta.env.VITE_API_URL}/api/game/${gameData._id}/guess`, {
             method: 'post',
             headers: {
                 "Content-Type": "application/json"
@@ -91,6 +91,7 @@ export default function Game() {
         },
         body: JSON.stringify(formData)
       })
+      
       navigate(`/map/${mapData._id}`);
     } catch (error) {
       console.error(error)
@@ -129,8 +130,8 @@ export default function Game() {
         })}
       </div>
       <ToastContainer
-        position="bottom-center"
-        autoClose={3000}
+        position="bottom-left"
+        autoClose={2000}
         newestOnTop={false}
         closeOnClick
         rtl={false}

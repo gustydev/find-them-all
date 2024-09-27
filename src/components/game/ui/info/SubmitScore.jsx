@@ -6,7 +6,7 @@ export default function SubmitScore ({display, submit, time}) {
 
     function handleSubmit(e) {
         e.preventDefault();
-        submit({name: name, time: time})
+        submit({name: name, time: time, password: import.meta.env.VITE_SECRET_PASS})
     }
 
     return (
