@@ -46,9 +46,10 @@ export default function Game() {
   }, [gameId, gameData])
 
   function handleClick(e) {
+    const coords = {x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY}
     if (!gameData.finished) {
-      setMenuCoords({x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY})
-      setGuessCoords({x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY})
+      setMenuCoords(coords)
+      setGuessCoords(coords)
       setMenuActive(!menuActive)
     }
   }

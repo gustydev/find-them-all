@@ -1,5 +1,9 @@
 import { useState } from "react";
 
+const transform = {
+    transform: 'translate(-50%, -300%)'
+}
+
 export default function Dropdown({ style, data, guessFunc }) {
     const [selection, setSelection] = useState('');
 
@@ -13,7 +17,7 @@ export default function Dropdown({ style, data, guessFunc }) {
     }
 
     return (
-        <select className={style} onChange={handleChange} value={selection} >
+        <select className={style} onChange={handleChange} value={selection} style={transform} >
             <option value="" disabled>Select a character</option>
             {data.characters && data.characters.map((c) => {
                 if (!c.found) {
